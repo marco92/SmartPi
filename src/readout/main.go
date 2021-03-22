@@ -32,7 +32,7 @@ import (
 	"math"
 	"net/http"
 	"os"
-	// "path/filepath"
+	"strconv"
 	"time"
 
 	"github.com/nDenerserve/SmartPi/src/smartpi"
@@ -41,6 +41,7 @@ import (
 	"golang.org/x/exp/io/i2c"
 
 	"github.com/fsnotify/fsnotify"
+	"github.com/gorilla/mux"
 
 	// //import the Paho Go MQTT library
 	// "github.com/eclipse/paho.mqtt.golang"
@@ -233,58 +234,39 @@ func init() {
 	log.SetFormatter(&log.TextFormatter{})
 	log.SetOutput(os.Stdout)
 	log.SetLevel(log.DebugLevel)
-
-	// prometheus.MustRegister(currentMetric)
-	// prometheus.MustRegister(voltageMetric)
-	// prometheus.MustRegister(activePowerMetirc)
-	// prometheus.MustRegister(cosphiMetric)
-	// prometheus.MustRegister(frequencyMetric)
-	// prometheus.MustRegister(apparentPowerMetric)
-	// prometheus.MustRegister(reactivePowerMetric)
-	// prometheus.MustRegister(powerFactorMetric)
-	// prometheus.MustRegister(version.NewCollector("smartpi"))
 }
 
-var appVersion = "No Version Provided"
-
 func main() {
-	config := smartpi.NewConfig()
 
+	// init
+	config := smartpi.NewConfig()
 	go configWatcher(config)
 
+	// version 
 	version := flag.Bool("v", false, "prints current version information")
 	flag.Parse()
 	if *version {
 		fmt.Println(appVersion)
 		os.Exit(0)
 	}
-
 	log.SetLevel(config.LogLevel)
 
-	// smartpi.CheckDatabase(config.DatabaseDir)
-
-	listenAddress := config.MetricsListenAddress
-
+	// start readout
 	log.Debug("Start SmartPi readout")
 
 	device, _ := smartpi.InitADE7878(config)
 
 	go pollSmartPi(config, device)
 
-	//http.Handle("/metrics", prometheus.Handler())
-	// http.Handle("/metrics", promhttp.Handler())
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte(`<html>
-            <head><title>SmartPi Readout Metrics Server</title></head>
-            <body>
-            <h1>SmartPi Readout Metrics Server</h1>
-            <p><a href="/metrics">Metrics</a></p>
-            </body>
-            </html>`))
-	})
+	// start API 
+	fmt.Println("SmartPi server started")
 
-	log.Debugf("Listening on %s", listenAddress)
-	if err := http.ListenAndServe(listenAddress, nil); err != nil {
-		panic(fmt.Errorf("Error starting HTTP server: %s", err))
-	}
+	r := mux.NewRouter()
+	r.HandleFunc("/api/{phaseId}/{valueId}/now", smartpi.ServeMomentaryValues)
+	r.HandleFunc("/api/{phaseId}/{valueId}/now/{format}", smartpi.ServeMomentaryValues)
+
+	r.HandleFunc("/api/version", getSoftwareInformations)
+
+	fmt.Println("SmartPi server listening: " + strconv.Itoa(config.WebserverPort))
+	go log.Fatal(http.ListenAndServe(":"+strconv.Itoa(config.WebserverPort), r))
 }
