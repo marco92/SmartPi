@@ -36,10 +36,10 @@ format:
 	@echo "formatting code..."
 	@$(GO) fmt $(pkgs)
 
-# buildsmartpireadout:
-# 	@echo "start building smartpireadout..."
-# 	$(GOBUILD) -o bin/$(BINARY_READOUT) -ldflags="-X main.appVersion=${VERSION}_${BUILD_TIME}" src/readout/*.go
-# 	@echo "building smartpireadout done"
+buildsmartpireadout:
+	@echo "start building smartpireadout..."
+	$(GOBUILD) -o bin/$(BINARY_READOUT) -ldflags="-X main.appVersion=${VERSION}_${BUILD_TIME}" src/readout/*.go
+	@echo "building smartpireadout done"
 
 buildsmartpiserver:
 	@echo "start building smartpiserver..."
