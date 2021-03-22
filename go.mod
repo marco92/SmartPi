@@ -8,7 +8,6 @@ require (
 	github.com/gorilla/context v1.1.1
 	github.com/gorilla/mux v1.8.0
 	github.com/kr/pretty v0.1.0 // indirect
-	github.com/msteinert/pam v0.0.0-20201130170657-e61372126161
 	github.com/nathan-osman/go-rpigpio v0.0.0-20160701025123-bce6190607da
 	github.com/oleiade/reflections v0.0.0-20160817071559-0e86b3c98b2f
 	github.com/sirupsen/logrus v1.6.0

@@ -1,10 +1,10 @@
 FROM golang:1.16-alpine
 
-RUN apt-get update && apt-get install -y \
-  libpam0g-dev \
-  && rm -rf /var/lib/apt/lists/*
+# RUN apt-get update && apt-get install -y \
+#   libpam0g-dev \
+#   && rm -rf /var/lib/apt/lists/*
 
-RUN apk add --no-cache git
+RUN apk add --no-cache git alpine-sdk
 
 # Set the Current Working Directory inside the container
 WORKDIR /app
@@ -18,7 +18,7 @@ RUN go mod download
 COPY . .
 
 # Build the Go app
-RUN go buil -o ./out/app ./src/readout/*.go
+RUN go build -o ./out/app ./src/readout/*.go
 
 
 # This container exposes port 1080 to the outside world

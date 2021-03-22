@@ -222,7 +222,7 @@ func configWatcher(config *smartpi.Config) {
 	}()
 
 	log.Debug("init done 2")
-	err = watcher.Add("/etc/smartpi")
+	err = watcher.Add("/app/config/etc/smartpi")
 	if err != nil {
 		log.Fatal(err)
 	}
