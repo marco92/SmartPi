@@ -18,7 +18,7 @@ GOGET=$(GO) get
 pkgs = $(shell $(GO) list ./src/...)
 
 # all: format makedir get buildsmartpireadout buildsmartpiserver buildsmartpiftpupload buildsmartpimodbusserver
-all: format makedir get buildsmartpiserver
+all: format makedir get buildsmartpireadout buildsmartpiserver 
 #all: makedir get buildsmartpireadout
 
 makedir:
