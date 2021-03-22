@@ -196,9 +196,9 @@ func main() {
 	// r.HandleFunc("/api/config/network/wifi/active/{name}", BasicAuth("Please enter your username and password for this site", smartpi.ActivateWifi, config, user, "smartpiadmin")).Methods("GET")
 	// r.HandleFunc("/api/config/network/wifi/active/{name}", BasicAuth("Please enter your username and password for this site", smartpi.DeactivateWifi, config, user, "smartpiadmin")).Methods("DELETE")
 	// r.HandleFunc("/api/config/network/wifi/security/change/key", BasicAuth("Please enter your username and password for this site", smartpi.ChangeWifiKey, config, user, "smartpiadmin")).Methods("POST")
-	r.PathPrefix("/").Handler(http.FileServer(http.Dir(config.DocRoot)))
+	// r.PathPrefix("/").Handler(http.FileServer(http.Dir(config.DocRoot)))
 	// http.Handle("/metrics", promhttp.Handler())
 	// http.Handle("/", promhttp.InstrumentHandlerCounter(responseCount, r))
 	fmt.Println("SmartPi server listening: " + strconv.Itoa(config.WebserverPort))
-	log.Fatal(http.ListenAndServe(":"+strconv.Itoa(config.WebserverPort), nil))
+	log.Fatal(http.ListenAndServe(":"+strconv.Itoa(config.WebserverPort), r))
 }
