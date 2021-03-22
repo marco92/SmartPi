@@ -199,5 +199,6 @@ func main() {
 	r.PathPrefix("/").Handler(http.FileServer(http.Dir(config.DocRoot)))
 	// http.Handle("/metrics", promhttp.Handler())
 	// http.Handle("/", promhttp.InstrumentHandlerCounter(responseCount, r))
+	fmt.Println("SmartPi server listening: " + strconv.Itoa(config.WebserverPort))
 	log.Fatal(http.ListenAndServe(":"+strconv.Itoa(config.WebserverPort), nil))
 }
