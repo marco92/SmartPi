@@ -1,4 +1,4 @@
-# BINARY_READOUT=smartpireadout
+BINARY_READOUT=smartpireadout
 BINARY_SERVER=smartpiserver
 # BINARY_FTPUPLOAD=smartpiftpupload
 # BINARY_MODBUSSERVER=smartpimodbusserver
