@@ -5,3 +5,4 @@ services:
       context: .
     ports:
      - "1080:1080"
+    restart: unless-stopped

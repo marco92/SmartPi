@@ -4,7 +4,7 @@ FROM golang:1.16-alpine
 #   libpam0g-dev \
 #   && rm -rf /var/lib/apt/lists/*
 
-RUN apk add --no-cache git alpine-sdk
+RUN apk add --update --no-cache git build-base
 
 # Set the Current Working Directory inside the container
 WORKDIR /app

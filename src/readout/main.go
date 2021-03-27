@@ -230,12 +230,6 @@ func configWatcher(config *smartpi.Config) {
 	log.Debug("init done 3")
 }
 
-func init() {
-	log.SetFormatter(&log.TextFormatter{})
-	log.SetOutput(os.Stdout)
-	log.SetLevel(log.DebugLevel)
-}
-
 func main() {
 
 	// init
